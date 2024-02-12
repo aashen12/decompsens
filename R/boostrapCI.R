@@ -13,6 +13,8 @@
 #'
 #' @return Extrema (an interval) of the RMPW estimator.
 #'
+#' @import parallel
+#'
 #' @export
 
 
