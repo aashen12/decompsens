@@ -39,7 +39,7 @@ boostrapCI <- function(G, Y, gamma = 0, w, alpha = 0.05, estimand = "point",
   n <- length(G)
 
   # if (warm.start) {
-  #   start <- glm(A ~ X, family = "binomial")$coefs
+  #   start <- glm(Z ~ X, family = "binomial")$coefs
   # } else {
   #   start <- NULL
   # }
