@@ -26,6 +26,7 @@ getExtrema <- function(G, Y, gamma = 0, w, estimand = "point") {
 
   message("Parameter of interest: ", estimand)
   message("Estimate: ", state)
+  # prints the value of the estimator before bootstrapping
 
   w <- w[G != 0]
   Y <- Y[G != 0]
