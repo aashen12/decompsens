@@ -1,4 +1,4 @@
-#' Fast solution to obtain extrema of RMPW estimator in decomposition
+#' Fast solution to obtain extrema of RMPW estimator in causal decomposition
 #' problems
 #'
 #' @param G Indicator of unmodifiable group or characteristic
