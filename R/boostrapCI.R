@@ -2,6 +2,9 @@
 #' problems
 #'
 #' @param G Indicator of unmodifiable group or characteristic
+#' @param XA Allowable covariates
+#' @param XN Non-allowable covariates
+#' @param Z Treatment
 #' @param Y Outcome
 #' @param gamma Sensitivity parameter (log of MSM Lambda)
 #' @param w fitted RMPW weights
@@ -19,7 +22,7 @@
 #' @export
 
 
-boostrapCI <- function(G, Y, gamma = 0, w, alpha = 0.05, estimand = "point",
+boostrapCI <- function(G, XA, XN, Z, Y, gamma = 0, w, alpha = 0.05, estimand = "point",
                        parallel = TRUE, B = 1000, stab = TRUE) {
   estimand <- match.arg(estimand, c("point", "reduction", "residual"))
   # assume observed rmpw weights already computed
@@ -53,6 +56,10 @@ boostrapCI <- function(G, Y, gamma = 0, w, alpha = 0.05, estimand = "point",
     s <- sample(1:n, n, TRUE);
     Ys <- Y[s]
     Gs <- G[s]
+    XAs <- XA[s,]
+    XNs <- XN[s,]
+    Zs <- Z[s]
+
     mu10_B <- tryCatch(getExtrema(G[s], Y[s], gamma, w[s], estimand = "point", stab),
                     error = function(e) {print(e)});
     switch(estimand,

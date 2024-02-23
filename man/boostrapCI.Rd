@@ -7,17 +7,27 @@ problems}
 \usage{
 boostrapCI(
   G,
+  XA,
+  XN,
+  Z,
   Y,
   gamma = 0,
   w,
   alpha = 0.05,
   estimand = "point",
   parallel = TRUE,
-  B = 1000
+  B = 1000,
+  stab = TRUE
 )
 }
 \arguments{
 \item{G}{Indicator of unmodifiable group or characteristic}
+
+\item{XA}{Allowable covariates}
+
+\item{XN}{Non-allowable covariates}
+
+\item{Z}{Treatment}
 
 \item{Y}{Outcome}
 

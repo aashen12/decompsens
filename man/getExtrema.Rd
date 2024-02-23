@@ -5,7 +5,7 @@
 \title{Fast solution to obtain extrema of RMPW estimator in causal decomposition
 problems}
 \usage{
-getExtrema(G, Y, gamma = 0, w, estimand = "point")
+getExtrema(G, Y, gamma = 0, w, estimand = "point", stab = TRUE)
 }
 \arguments{
 \item{G}{Indicator of unmodifiable group or characteristic}
@@ -17,6 +17,8 @@ getExtrema(G, Y, gamma = 0, w, estimand = "point")
 \item{w}{fitted RMPW weights}
 
 \item{estimand}{Target estimand, either "point", "reduction" or "residual"}
+
+\item{stab}{Logical indicating whether to use stabilized weights}
 }
 \value{
 Extrema (an interval) of the RMPW estimator.
