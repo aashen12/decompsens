@@ -51,7 +51,7 @@ boostrapCI <- function(G, Y, gamma = 0, w, alpha = 0.05, estimand = "point",
 
   out <- mclapply(1:B, function(iter) {
     s <- sample(1:n, n, TRUE);
-    res <- tryCatch(getExtrema(G[s], Y[s], gamma, w[s], estimand),
+    res <- tryCatch(getExtrema(G[s], Y[s], gamma, w[s], estimand, stab),
                     error = function(e) {print(e)});
     res
   }, mc.cores = no.cores)

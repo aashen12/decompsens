@@ -46,8 +46,13 @@ getExtrema <- function(G, Y, gamma = 0, w, estimand = "point", stab = TRUE) {
   num.each.up <- G * Y * (exp(gamma) * w)
   num <- c(0, cumsum(num.each.up)) + c(rev(cumsum(rev(num.each.low))), 0)
 
-  den.each.low <- G * (exp(-gamma) * w)
-  den.each.up <- G * (exp(gamma) * w)
+  if (stab) {
+    den.each.low <- G * (exp(-gamma) * w)
+    den.each.up <- G * (exp(gamma) * w)
+  } else {
+    den.each.low <- G * (exp(-gamma))
+    den.each.up <- G * (exp(gamma))
+  }
   den <- c(0, cumsum(den.each.up)) + c(rev(cumsum(rev(den.each.low))), 0)
 
   maximum <- max(num / den)
