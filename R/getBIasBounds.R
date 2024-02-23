@@ -1,7 +1,7 @@
 #' Function to obtain bias bounds for amplification
 #' @export
 
-getBiasBounds <- function(G, Z, XA, XN, Y, w, Lambda, trim = 0.05,
+getBiasBounds <- function(G, Z, XA, XN, Y, Lambda, trim = 0.05,
                           allowable = FALSE, stab = TRUE) {
   ####################################################################
   # Get bounds on bias = \mu^*_10 - \hat{mu}_10
@@ -13,10 +13,8 @@ getBiasBounds <- function(G, Z, XA, XN, Y, w, Lambda, trim = 0.05,
 
   mu1 <- mean(Y[G == 1])
   mu0 <- mean(Y[G == 0])
-
-  w_rmpw <- estimateRMPW(G = G, Z = Z, Y = Y, XA = XA, XN = XN,
+  w <- estimateRMPW(G = G, Z = Z, Y = Y, XA = XA, XN = XN,
                          trim = trim, allowable = allowable)
-
   if (stab) {
     mu_10 <- sum(w * Y * G) / sum(w * G)
   } else {
