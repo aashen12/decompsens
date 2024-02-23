@@ -10,6 +10,7 @@ getBiasBounds(
   XA,
   XN,
   Y,
+  w,
   Lambda,
   trim = 0.05,
   allowable = FALSE,

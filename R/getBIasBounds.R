@@ -1,7 +1,7 @@
 #' Function to obtain bias bounds for amplification
 #' @export
 
-getBiasBounds <- function(G, Z, XA, XN, Y, Lambda, trim = 0.05,
+getBiasBounds <- function(G, Z, XA, XN, Y, w, Lambda, trim = 0.05,
                           allowable = FALSE, stab = TRUE) {
   ####################################################################
   # Get bounds on bias = \mu^*_10 - \hat{mu}_10
