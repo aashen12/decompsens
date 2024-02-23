@@ -53,12 +53,12 @@ boostrapCI <- function(G, Y, gamma = 0, w, alpha = 0.05, estimand = "point",
     s <- sample(1:n, n, TRUE);
     Ys <- Y[s]
     Gs <- G[s]
-    res <- tryCatch(getExtrema(G[s], Y[s], gamma, w[s], estimand = "point", stab),
+    mu10_B <- tryCatch(getExtrema(G[s], Y[s], gamma, w[s], estimand = "point", stab),
                     error = function(e) {print(e)});
     switch(estimand,
-           point = res,
-           reduction = mean(Ys[Gs == 1]) - res,
-           residual = res - mean(Ys[Gs == 0]))
+           point = mu10_B,
+           reduction = mean(Ys[Gs == 1]) - rev(mu10_B),
+           residual = mu10_B - mean(Ys[Gs == 0]))
   }, mc.cores = no.cores)
 
   out <- do.call(rbind, out)
