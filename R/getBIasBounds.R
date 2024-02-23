@@ -28,7 +28,7 @@ getBiasBounds <- function(G, Z, XA, XN, Y, Lambda, trim = 0.05,
   # into account whether we care about red or res
 
   # return bounds and mu_0_hat
-  out <- list(bounds, mu_10, w[G == 1])
+  out <- list(bounds, mu_10, w)
 
   return(out)
 }
