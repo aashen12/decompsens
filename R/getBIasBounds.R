@@ -28,7 +28,7 @@ getBiasBounds <- function(G, Z, XA, XN, Y, w, Lambda, trim = 0.05,
                        estimand = "point", stab = stab) - mu_10
 
   # return bounds and mu_0_hat
-  out <- list(bounds, mu_0_hat, weights_x)
+  out <- list(bounds, mu_10, weights_x)
 
   return(out)
 }
