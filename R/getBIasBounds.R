@@ -1,25 +1,13 @@
 #' Function to obtain bias bounds for amplification
 #' @export
 
-getBiasBounds <- function(G, Z, XA, XN, Y, Lambda, estimand, trim = 0.05,
+getBiasBounds <- function(G, Z, XA, XN, Y, Lambda, trim = 0.05,
                           allowable = FALSE, stab = TRUE) {
   ####################################################################
   # Get bounds on bias = \mu^*_10 - \hat{mu}_10
   # lower bound = inf h \hat{mu}_10^{(h)} - \hat{mu}_10
   # upper bound = inf h \hat{mu}_10^{(h)} - \hat{mu}_10
-  #
-  # input:
-  #   Z: treatment vector
-  #   X: covariate matrix
-  #   Y: outcome vector
-  #   Lambda: sensitivity parameter
-  #
-  # output:
-  #   bounds: out[[1]]
-  #     bounds[1]: upper bound = sup h \hat{mu}_0^{(h)} - \hat{mu}_0
-  #     bounds[2]: lower bound = inf h \hat{mu}_0^{(h)} - \hat{mu}_0
-  #   mu_0_hat: out[[2]]. estimate of E[Y(0)|Z==1]
-  #   eb.out$w: out[[3]]. Estimated balancing weights
+  # there is no reduction or residual since it cancels out
   #
   ####################################################################
 
@@ -36,13 +24,8 @@ getBiasBounds <- function(G, Z, XA, XN, Y, Lambda, estimand, trim = 0.05,
   }
 
   # compute bounds
-  bounds <- switch(estimand,
-                   point = getExtrema(G = G, Y = Y, gamma = log(Lambda), w = w,
-                                      estimand = "point", stab = stab),
-                   reduction = mean(Y[G == 1]) - rev(getExtrema(G = G, Y = Y, gamma = log(Lambda), w = w,
-                                                                estimand = "point", stab = stab)),
-                   residual = getExtrema(G = G, Y = Y, gamma = log(Lambda), w = w,
-                                         estimand = "point", stab = stab) - mean(Y[G == 0]))
+  bounds <- getExtrema(G = G, Y = Y, gamma = log(Lambda), w = w,
+                       estimand = "point", stab = stab) - mu_10
 
   # return bounds and mu_0_hat
   out <- list(bounds, mu_0_hat, weights_x)

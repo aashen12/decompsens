@@ -11,7 +11,6 @@ getBiasBounds(
   XN,
   Y,
   Lambda,
-  estimand,
   trim = 0.05,
   allowable = FALSE,
   stab = TRUE
