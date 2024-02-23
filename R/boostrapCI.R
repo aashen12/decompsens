@@ -27,16 +27,6 @@ boostrapCI <- function(G, Z, Y, XA, XN, gamma = 0, w, alpha = 0.05, estimand = "
                        parallel = TRUE, B = 1000, stab = TRUE,
                        allowable = FALSE, trim = 0.05) {
   estimand <- match.arg(estimand, c("point", "reduction", "residual"))
-  # assume observed rmpw weights already computed
-  mu1 <- mean(Y[G == 1])
-  mu0 <- mean(Y[G == 0])
-  if (stab) {
-    mu_10 <- sum(w * Y * G) / sum(w * G)
-  } else {
-    mu_10 <- mean(w * Y * G)
-  }
-  # message("mu1: ", round(mu1, 2))
-  # message("mu0: ", round(mu0, 2))
 
   state <- switch(estimand, point = round(mu_10, 3),
                   reduction = round(mu1 - mu_10, 3),
