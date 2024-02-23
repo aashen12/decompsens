@@ -17,7 +17,9 @@ boostrapCI(
   estimand = "point",
   parallel = TRUE,
   B = 1000,
-  stab = TRUE
+  stab = TRUE,
+  allowable = FALSE,
+  trim = 0.05
 )
 }
 \arguments{
@@ -42,6 +44,10 @@ boostrapCI(
 \item{parallel}{Logical indicating whether to use parallel processing}
 
 \item{B}{Number of bootstrap samples}
+
+\item{allowable}{Logical indicating whether to use allowability framework}
+
+\item{trim}{Trimming proportion}
 }
 \value{
 Extrema (an interval) of the RMPW estimator.

@@ -12,7 +12,8 @@
 #' @param estimand Target estimand, either "point", "reduction" or "residual"
 #' @param parallel Logical indicating whether to use parallel processing
 #' @param B Number of bootstrap samples
-#'
+#' @param trim Trimming proportion
+#' @param allowable Logical indicating whether to use allowability framework
 #'
 #'
 #' @return Extrema (an interval) of the RMPW estimator.
@@ -23,7 +24,8 @@
 
 
 boostrapCI <- function(G, XA, XN, Z, Y, gamma = 0, w, alpha = 0.05, estimand = "point",
-                       parallel = TRUE, B = 1000, stab = TRUE) {
+                       parallel = TRUE, B = 1000, stab = TRUE,
+                       allowable = FALSE, trim = 0.05) {
   estimand <- match.arg(estimand, c("point", "reduction", "residual"))
   # assume observed rmpw weights already computed
   mu1 <- mean(Y[G == 1])
@@ -59,6 +61,9 @@ boostrapCI <- function(G, XA, XN, Z, Y, gamma = 0, w, alpha = 0.05, estimand = "
     XAs <- XA[s,]
     XNs <- XN[s,]
     Zs <- Z[s]
+
+    w_rmpw_boot <- estimateRMPW(G = Gs, Z = Zs, Y = Ys, XA = XAs, XN = XNs,
+                                trim = trim, allowable = allowable)
 
     mu10_B <- tryCatch(getExtrema(G[s], Y[s], gamma, w[s], estimand = "point", stab),
                     error = function(e) {print(e)});
