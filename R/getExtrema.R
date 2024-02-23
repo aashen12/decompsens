@@ -67,6 +67,6 @@ getExtrema <- function(G, Y, gamma = 0, w, estimand = "point", stab = TRUE) {
   out <- c(minimum, maximum)
   switch(estimand,
          point = out,
-         reduction = mu1 - out,
+         reduction = mu1 - rev(out),
          residual = out - mu0)
 }
