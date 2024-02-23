@@ -62,10 +62,11 @@ boostrapCI <- function(G, XA, XN, Z, Y, gamma = 0, w, alpha = 0.05, estimand = "
     XNs <- XN[s,]
     Zs <- Z[s]
 
+    # re-estimate weights
     w_rmpw_boot <- estimateRMPW(G = Gs, Z = Zs, Y = Ys, XA = XAs, XN = XNs,
                                 trim = trim, allowable = allowable)
 
-    mu10_B <- tryCatch(getExtrema(G[s], Y[s], gamma, w[s], estimand = "point", stab),
+    mu10_B <- tryCatch(getExtrema(G[s], Y[s], gamma, w_rmpw_boot, estimand = "point", stab),
                     error = function(e) {print(e)});
     switch(estimand,
            point = mu10_B,
