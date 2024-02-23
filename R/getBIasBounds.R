@@ -24,9 +24,11 @@ getBiasBounds <- function(G, Z, XA, XN, Y, Lambda, trim = 0.05,
   # compute bounds
   bounds <- getExtrema(G = G, Y = Y, gamma = log(Lambda), w = w,
                        estimand = "point", stab = stab) - mu_10
+  # even if we care about red or res, we use point bc the lambda already takes
+  # into account whether we care about red or res
 
   # return bounds and mu_0_hat
-  out <- list(bounds, mu_10, w_rmpw)
+  out <- list(bounds, mu_10, w[G == 1])
 
   return(out)
 }
