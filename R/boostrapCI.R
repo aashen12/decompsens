@@ -11,6 +11,7 @@
 #' @param B Number of bootstrap samples
 #'
 #'
+#'
 #' @return Extrema (an interval) of the RMPW estimator.
 #'
 #' @import parallel
@@ -19,12 +20,16 @@
 
 
 boostrapCI <- function(G, Y, gamma = 0, w, alpha = 0.05, estimand = "point",
-                       parallel = TRUE, B = 1000) {
+                       parallel = TRUE, B = 1000, stab = TRUE) {
   estimand <- match.arg(estimand, c("point", "reduction", "residual"))
   # assume observed rmpw weights already computed
   mu1 <- mean(Y[G == 1])
   mu0 <- mean(Y[G == 0])
-  mu_10 <- sum(w * Y * G) / sum(w * G)
+  if (stab) {
+    mu_10 <- sum(w * Y * G) / sum(w * G)
+  } else {
+    mu_10 <- mean(w * Y * G)
+  }
   # message("mu1: ", round(mu1, 2))
   # message("mu0: ", round(mu0, 2))
 

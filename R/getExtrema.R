@@ -6,17 +6,22 @@
 #' @param gamma Sensitivity parameter (log of MSM Lambda)
 #' @param w fitted RMPW weights
 #' @param estimand Target estimand, either "point", "reduction" or "residual"
+#' @param stab Logical indicating whether to use stabilized weights
 #'
 #' @return Extrema (an interval) of the RMPW estimator.
 #'
 #' @export
 
-getExtrema <- function(G, Y, gamma = 0, w, estimand = "point") {
+getExtrema <- function(G, Y, gamma = 0, w, estimand = "point", stab = TRUE) {
   estimand <- match.arg(estimand, c("point", "reduction", "residual"))
   # assume observed rmpw weights already computed
   mu1 <- mean(Y[G == 1])
   mu0 <- mean(Y[G == 0])
-  mu_10 <- sum(w * Y * G) / sum(w * G)
+  if (stab) {
+    mu_10 <- sum(w * Y * G) / sum(w * G)
+  } else {
+    mu_10 <- mean(w * Y * G)
+  }
   # message("mu1: ", round(mu1, 2))
   # message("mu0: ", round(mu0, 2))
 
