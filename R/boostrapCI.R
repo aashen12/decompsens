@@ -51,12 +51,14 @@ boostrapCI <- function(G, Y, gamma = 0, w, alpha = 0.05, estimand = "point",
 
   out <- mclapply(1:B, function(iter) {
     s <- sample(1:n, n, TRUE);
+    Ys <- Y[s]
+    Gs <- G[s]
     res <- tryCatch(getExtrema(G[s], Y[s], gamma, w[s], estimand = "point", stab),
                     error = function(e) {print(e)});
     switch(estimand,
            point = res,
-           reduction = mean(Y[s][G[s] == 1]) - res,
-           residual = res - mean(Y[s][G[s] == 0]))
+           reduction = mean(Ys[Gs == 1]) - res,
+           residual = res - mean(Ys[Gs == 0]))
   }, mc.cores = no.cores)
 
   out <- do.call(rbind, out)
