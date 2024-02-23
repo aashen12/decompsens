@@ -7,10 +7,10 @@ problems}
 \usage{
 boostrapCI(
   G,
-  XA,
-  XN,
   Z,
   Y,
+  XA,
+  XN,
   gamma = 0,
   w,
   alpha = 0.05,
@@ -25,13 +25,13 @@ boostrapCI(
 \arguments{
 \item{G}{Indicator of unmodifiable group or characteristic}
 
-\item{XA}{Allowable covariates}
-
-\item{XN}{Non-allowable covariates}
-
 \item{Z}{Treatment}
 
 \item{Y}{Outcome}
+
+\item{XA}{Allowable covariates}
+
+\item{XN}{Non-allowable covariates}
 
 \item{gamma}{Sensitivity parameter (log of MSM Lambda)}
 
