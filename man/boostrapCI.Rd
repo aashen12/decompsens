@@ -50,7 +50,7 @@ boostrapCI(
 \item{trim}{Trimming proportion}
 }
 \value{
-Extrema (an interval) of the RMPW estimator.
+Bootstrap CI of the desired estimator.
 }
 \description{
 Procedure to obtain bootstrap CI of RMPW estimator in causal decomposition
