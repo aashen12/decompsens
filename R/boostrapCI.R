@@ -15,8 +15,7 @@
 #' @param trim Trimming proportion
 #' @param allowable Logical indicating whether to use allowability framework
 #'
-#'
-#' @return Extrema (an interval) of the RMPW estimator.
+#' @return Bootstrap CI of the desired estimator.
 #'
 #' @import parallel
 #'

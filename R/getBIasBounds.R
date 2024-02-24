@@ -1,4 +1,17 @@
 #' Function to obtain bias bounds for amplification
+#' @param G Indicator of unmodifiable group or characteristic
+#' @param XA Allowable covariates
+#' @param XN Non-allowable covariates
+#' @param Z Treatment
+#' @param Y Outcome
+#' @param Lambda Sensitivity parameter (The MSM Lambda)
+#' @param trim Trimming proportion
+#' @param allowable Logical indicating whether to use allowability framework
+#'
+#' @returns A list of 3 items: the lower and upper bounds: mu_10(h) - mu_10,
+#' the point estimate mu_10, the RMPW weights
+#'
+#'
 #' @export
 
 getBiasBounds <- function(G, Z, XA, XN, Y, Lambda, trim = 0.05,

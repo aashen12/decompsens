@@ -7,10 +7,7 @@
 #' @param trim Trimming proportion
 #' @param allowable Logical indicating whether to use allowability framework
 #'
-#'
-#'
 #' @return RMPW weights
-#'
 #'
 #' @export
 
