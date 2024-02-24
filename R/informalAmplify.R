@@ -60,5 +60,6 @@ informalAmplify <- function(G, Z, XA, XN, Y, Lambda, trim = 0.05, allowable = FA
   strongest_cov_df <- dplyr::inner_join(coeff_df, imbal_df, by = "covar") %>%
     dplyr::arrange(desc(coeff*imbal))
 
-  return(strongest_cov_df)
+  return(list(df = strongest_cov_df, max_beta = max_betau_01, max_imbal_stnd = max_imbal_stnd,
+               max_imbal_stnd_wt = max_imbal_stnd_wt))
 }
