@@ -22,8 +22,8 @@ estimateRMPW <- function(G, Z, Y, XA, XN, trim = 0.05, allowable = FALSE) {
     e1 <- glm(Z ~ X, family = binomial, weights = G, na.action = na.exclude)$fitted.values
   }
 
-  e0 <- pmax(pmin(e0, quantile(e0, 1-trim)), quantile(e0, trim))
-  e1 <- pmax(pmin(e1, quantile(e1, 1-trim)), quantile(e1, trim))
+  e0 <- pmax(pmin(e0, 1 - trim), trim)
+  e1 <- pmax(pmin(e1, 1 - trim), trim)
 
   w1 = e0 / e1
   w0 = (1 - e0) / (1 - e1)
