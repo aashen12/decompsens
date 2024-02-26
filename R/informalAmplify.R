@@ -32,17 +32,18 @@ informalAmplify <- function(G, Z, XA, XN, Y, Lambda, trim = 0.05, allowable = FA
   max_betau_01 <- max(abs(coeffs))
 
 
-  X_stnd <- apply(X[, 2:ncol(X)], MARGIN = 2, FUN = function(x) {scale(x)})
 
   ## Compute standardized imbalance in U: \delta_u ##
 
   ## Between-group imbalance before weighting
-  imbal_stnd <- colMeans(X_stnd[G == 1, ]) - colMeans(X_stnd[G == 0, ])
+  imbal_stnd <- colMeans(X_G1_stnd[Z == 1, ]) - colMeans(X_G1_stnd[Z == 0, ])
   max_imbal_stnd <- max(abs(imbal_stnd))
 
   # Compute imbalance in covariates between G=0 and G=1_int after weighting for mu_10
   w <- bounds[[3]]
-  imbal_stnd_weight <- colMeans(X_stnd[G == 0, ]) - colSums(X_stnd[G == 1, ] * (w[G == 1] / sum(w[G == 1])))
+  X_G1_w_stnd <- apply(X_G1, MARGIN = 2, FUN = function(x) {sum(x * w) / sum(w)})
+
+  imbal_stnd_weight <- colMeans(X_G1_w_stnd[Z == 1, ]) - colMeans(X_G1_w_stnd[Z == 0, ])
   max_imbal_stnd_wt <- max(abs(imbal_stnd_weight))
 
   # Get coordinates for strongest observed covariates to plot
