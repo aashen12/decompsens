@@ -39,6 +39,7 @@ bootstrapCI <- function(G, Z, Y, XA, XN, gamma = 0, w, alpha = 0.05, estimand = 
   no.cores <- max(1, ifelse(parallel, detectCores(), 1))
 
   n <- length(G)
+
   if (stratify) {
     prob_1 <- mean(G == 1)
     n1 <- ceiling(n * prob_1)
