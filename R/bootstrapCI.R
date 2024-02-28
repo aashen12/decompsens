@@ -37,6 +37,7 @@ bootstrapCI <- function(G, Z, Y, XA, XN, gamma = 0, w, alpha = 0.05, estimand = 
   #message("Estimate: ", state)
 
   no.cores <- max(1, ifelse(parallel, detectCores(), 1))
+
   n <- length(G)
   if (stratify) {
     prob_1 <- mean(G == 1)
@@ -52,7 +53,7 @@ bootstrapCI <- function(G, Z, Y, XA, XN, gamma = 0, w, alpha = 0.05, estimand = 
 
   out <- mclapply(1:B, function(iter) {
     if (stratify) {
-      s <- sample(1:n, size = n, replace = TRUE, prob = ifelse(G == 1, prob_1, 1 - prob_1))
+      s <- sample(1:n, size = n, replace = TRUE)
     } else {
       s <- c(sample(which(G == 1), size = n1, replace = TRUE),
              sample(which(G == 0), size = n0, replace = TRUE))
