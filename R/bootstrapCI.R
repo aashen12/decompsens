@@ -44,7 +44,7 @@ bootstrapCI <- function(G, Z, Y, XA, XN, gamma = 0, w, alpha = 0.05, estimand = 
     n <- length(G)
     prob_1 <- mean(G == 1)
     n1_rough <- n * prob_1
-    n1 <- ceiling(n1_rough)
+    n1 <- base::ceiling(n1_rough)
     n0 <- n - n1
   }
 
@@ -55,7 +55,7 @@ bootstrapCI <- function(G, Z, Y, XA, XN, gamma = 0, w, alpha = 0.05, estimand = 
   # }
 
   out <- mclapply(1:B, function(iter) {
-    if (stratify) {
+    if (!stratify) {
       s <- sample(1:n, size = n, replace = TRUE)
     } else {
       s <- c(sample(which(G == 1), size = n1, replace = TRUE),
