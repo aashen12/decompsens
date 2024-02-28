@@ -12,6 +12,8 @@
 #' @param estimand Target estimand, either "point", "reduction" or "residual"
 #' @param parallel Logical indicating whether to use parallel processing
 #' @param B Number of bootstrap samples
+#' @param stab use stabilized estimator? most likely yes
+#' @param stratify do block bootstrap
 #' @param trim Trimming proportion
 #' @param allowable Logical indicating whether to use allowability framework
 #'
@@ -23,7 +25,7 @@
 
 
 bootstrapCI <- function(G, Z, Y, XA, XN, gamma = 0, w, alpha = 0.05, estimand = "point",
-                       parallel = TRUE, B = 1000, stab = TRUE,
+                       parallel = TRUE, B = 1000, stab = TRUE, stratify = FALSE,
                        allowable = FALSE, trim = 0.05) {
   estimand <- match.arg(estimand, c("point", "reduction", "residual"))
 
@@ -36,6 +38,11 @@ bootstrapCI <- function(G, Z, Y, XA, XN, gamma = 0, w, alpha = 0.05, estimand = 
 
   no.cores <- max(1, ifelse(parallel, detectCores(), 1))
   n <- length(G)
+  if (stratify) {
+    prob_1 <- mean(G == 1)
+    n1 <- ceiling(n * prob_1)
+    n0 <- n - n1
+  }
 
   # if (warm.start) {
   #   start <- glm(Z ~ X, family = "binomial")$coefs
@@ -44,7 +51,12 @@ bootstrapCI <- function(G, Z, Y, XA, XN, gamma = 0, w, alpha = 0.05, estimand = 
   # }
 
   out <- mclapply(1:B, function(iter) {
-    s <- sample(1:n, n, TRUE);
+    if (stratify) {
+      s <- sample(1:n, size = n, replace = TRUE, prob = ifelse(G == 1, prob_1, 1 - prob_1))
+    } else {
+      s <- c(sample(which(G == 1), size = n1, replace = TRUE),
+             sample(which(G == 0), size = n0, replace = TRUE))
+    }
     Ys <- Y[s]
     Gs <- G[s]
     XAs <- XA[s,]
