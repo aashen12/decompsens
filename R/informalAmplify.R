@@ -1,7 +1,7 @@
 #' Function to perform amplification of sensitivity parameter
 #' @param G Indicator of unmodifiable group or characteristic
-#' @param XA Allowable covariates
-#' @param XN Non-allowable covariates
+#' @param XA Allowable covariates WITHOUT INTERCEPT
+#' @param XN Non-allowable covariates WITHOUT INTERCEPT
 #' @param Z Treatment
 #' @param Y Outcome
 #' @param Lambda Sensitivity parameter (The MSM Lambda)
@@ -20,7 +20,7 @@ informalAmplify <- function(G, Z, XA, XN, Y, Lambda, trim = 0.05, allowable = FA
   bounds <- decompsens::getBiasBounds(G, Z, XA, XN, Y, Lambda, trim = trim,
                                       allowable = allowable, stab = stab)
   maxbias <- max(abs(bounds[[1]])) # max{|inf mu_10^h - mu_10|, |sup mu_10^h - mu_10|}
-  X <- cbind(XA, XN[, -1])
+  X <- cbind(XA, XN)
   X_G1 <- X[G == 1, -1] # [, -1] for intercept
 
   # standardize X for group G = 1
