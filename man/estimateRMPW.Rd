@@ -13,9 +13,9 @@ estimateRMPW(G, Z, Y, XA, XN, trim = 0.05, allowable = FALSE)
 
 \item{Y}{Outcome}
 
-\item{XA}{Allowable covariates}
+\item{XA}{Allowable covariates WITHOUT INTERCEPT}
 
-\item{XN}{Non-allowable covariates}
+\item{XN}{Non-allowable covariates WITHOUT INTERCEPT}
 
 \item{trim}{Trimming proportion}
 

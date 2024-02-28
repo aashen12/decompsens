@@ -22,7 +22,7 @@
 #' @export
 
 
-boostrapCI <- function(G, Z, Y, XA, XN, gamma = 0, w, alpha = 0.05, estimand = "point",
+bootstrapCI <- function(G, Z, Y, XA, XN, gamma = 0, w, alpha = 0.05, estimand = "point",
                        parallel = TRUE, B = 1000, stab = TRUE,
                        allowable = FALSE, trim = 0.05) {
   estimand <- match.arg(estimand, c("point", "reduction", "residual"))

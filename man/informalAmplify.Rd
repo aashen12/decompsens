@@ -21,9 +21,9 @@ informalAmplify(
 
 \item{Z}{Treatment}
 
-\item{XA}{Allowable covariates}
+\item{XA}{Allowable covariates WITHOUT INTERCEPT}
 
-\item{XN}{Non-allowable covariates}
+\item{XN}{Non-allowable covariates WITHOUT INTERCEPT}
 
 \item{Y}{Outcome}
 
