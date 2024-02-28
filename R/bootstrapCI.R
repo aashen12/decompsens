@@ -41,8 +41,10 @@ bootstrapCI <- function(G, Z, Y, XA, XN, gamma = 0, w, alpha = 0.05, estimand = 
   n <- length(G)
 
   if (stratify) {
+    n <- length(G)
     prob_1 <- mean(G == 1)
-    n1 <- ceiling(n * prob_1)
+    n1_rough <- n * prob_1
+    n1 <- ceiling(n1_rough)
     n0 <- n - n1
   }
 

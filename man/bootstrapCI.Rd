@@ -18,6 +18,7 @@ bootstrapCI(
   parallel = TRUE,
   B = 1000,
   stab = TRUE,
+  stratify = FALSE,
   allowable = FALSE,
   trim = 0.05
 )
@@ -44,6 +45,10 @@ bootstrapCI(
 \item{parallel}{Logical indicating whether to use parallel processing}
 
 \item{B}{Number of bootstrap samples}
+
+\item{stab}{use stabilized estimator? most likely yes}
+
+\item{stratify}{do block bootstrap}
 
 \item{allowable}{Logical indicating whether to use allowability framework}
 
