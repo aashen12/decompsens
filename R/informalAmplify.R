@@ -21,7 +21,7 @@ informalAmplify <- function(G, Z, XA, XN, Y, Lambda, trim = 0.05, allowable = FA
                                       allowable = allowable, stab = stab)
   maxbias <- max(abs(bounds[[1]])) # max{|inf mu_10^h - mu_10|, |sup mu_10^h - mu_10|}
   X <- cbind(XA, XN)
-  X_G1 <- X[G == 1, -1] # [, -1] for intercept
+  X_G1 <- X[G == 1, ] # [, -1] for intercept
 
   # standardize X for group G = 1
   X_G1_stnd <- apply(X_G1, MARGIN = 2, FUN = function(x) {scale(x)})
