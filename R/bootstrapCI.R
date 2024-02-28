@@ -27,12 +27,12 @@ bootstrapCI <- function(G, Z, Y, XA, XN, gamma = 0, w, alpha = 0.05, estimand = 
                        allowable = FALSE, trim = 0.05) {
   estimand <- match.arg(estimand, c("point", "reduction", "residual"))
 
-  state <- switch(estimand, point = round(mu_10, 3),
-                  reduction = round(mu1 - mu_10, 3),
-                  residual = round(mu_10 - mu0, 3))
+#   state <- switch(estimand, point = round(mu_10, 3),
+#                   reduction = round(mu1 - mu_10, 3),
+#                   residual = round(mu_10 - mu0, 3))
 
   message("Parameter of interest: ", estimand)
-  message("Estimate: ", state)
+  #message("Estimate: ", state)
 
   no.cores <- max(1, ifelse(parallel, detectCores(), 1))
   n <- length(G)
