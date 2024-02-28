@@ -16,6 +16,7 @@
 #' @param stratify do block bootstrap
 #' @param trim Trimming proportion
 #' @param allowable Logical indicating whether to use allowability framework
+#' @param RD logical indicating whether to use risk diff or risk ratio (RR)
 #'
 #' @return Bootstrap CI of the desired estimator.
 #'
@@ -26,7 +27,7 @@
 
 bootstrapCI <- function(G, Z, Y, XA, XN, gamma = 0, w, alpha = 0.05, estimand = "point",
                        parallel = TRUE, B = 1000, stab = TRUE, stratify = FALSE,
-                       allowable = FALSE, trim = 0.05) {
+                       allowable = FALSE, trim = 0.05, RD = TRUE) {
   estimand <- match.arg(estimand, c("point", "reduction", "residual"))
 
 #   state <- switch(estimand, point = round(mu_10, 3),
@@ -73,10 +74,18 @@ bootstrapCI <- function(G, Z, Y, XA, XN, gamma = 0, w, alpha = 0.05, estimand = 
 
     mu10_B <- tryCatch(getExtrema(G[s], Y[s], gamma, w_rmpw_boot, estimand = "point", stab),
                     error = function(e) {print(e)});
-    switch(estimand,
-           point = mu10_B,
-           reduction = mean(Ys[Gs == 1]) - rev(mu10_B),
-           residual = mu10_B - mean(Ys[Gs == 0]))
+    if (RD) {
+      ests <- switch(estimand,
+                    point = mu10_B,
+                    reduction = mean(Ys[Gs == 1]) - rev(mu10_B),
+                    residual = mu10_B - mean(Ys[Gs == 0]))
+    } else {
+      ests <- switch(estimand,
+                    point = mu10_B,
+                    reduction = mean(Ys[Gs == 1]) / rev(mu10_B),
+                    residual = mu10_B / mean(Ys[Gs == 0]))
+    }
+    ests
   }, mc.cores = no.cores)
 
   out <- do.call(rbind, out)

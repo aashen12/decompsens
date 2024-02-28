@@ -20,7 +20,8 @@ bootstrapCI(
   stab = TRUE,
   stratify = FALSE,
   allowable = FALSE,
-  trim = 0.05
+  trim = 0.05,
+  RD = TRUE
 )
 }
 \arguments{
@@ -53,6 +54,8 @@ bootstrapCI(
 \item{allowable}{Logical indicating whether to use allowability framework}
 
 \item{trim}{Trimming proportion}
+
+\item{RD}{logical indicating whether to use risk diff or risk ratio (RR)}
 }
 \value{
 Bootstrap CI of the desired estimator.

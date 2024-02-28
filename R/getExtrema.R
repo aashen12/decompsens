@@ -7,12 +7,13 @@
 #' @param w fitted RMPW weights
 #' @param estimand Target estimand, either "point", "reduction" or "residual"
 #' @param stab Logical indicating whether to use stabilized weights
+#' @param RD logical indicating whether to use risk diff or risk ratio (RR)
 #'
 #' @return Extrema (an interval) of the RMPW estimator.
 #'
 #' @export
 
-getExtrema <- function(G, Y, gamma = 0, w, estimand = "point", stab = TRUE) {
+getExtrema <- function(G, Y, gamma = 0, w, estimand = "point", stab = TRUE, RD = TRUE) {
   estimand <- match.arg(estimand, c("point", "reduction", "residual"))
   # assume observed rmpw weights already computed
   mu1 <- mean(Y[G == 1])
@@ -65,8 +66,15 @@ getExtrema <- function(G, Y, gamma = 0, w, estimand = "point", stab = TRUE) {
   ## print(den[which.min(num/den)] / n)
 
   out <- c(minimum, maximum)
-  switch(estimand,
-         point = out,
-         reduction = mu1 - rev(out),
-         residual = out - mu0)
+  if (RD) {
+    return(switch(estimand,
+           point = out,
+           reduction = mu1 - rev(out),
+           residual = out - mu0))
+  } else {
+    return(switch(estimand,
+           point = out,
+           reduction = mu1 / rev(out),
+           residual = out / mu0))
+  }
 }
