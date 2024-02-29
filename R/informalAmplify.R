@@ -20,7 +20,7 @@ informalAmplify <- function(G, Z, XA, XN, Y, Lambda, trim = 0.05, allowable = FA
   bounds <- decompsens::getBiasBounds(G, Z, XA, XN, Y, Lambda, trim = trim,
                                       allowable = allowable, stab = stab)
   maxbias <- max(abs(bounds[[1]])) # max{|inf mu_10^h - mu_10|, |sup mu_10^h - mu_10|}
-  message("Max bias:", maxbias)
+  message("Max bias: ", round(maxbias, 3))
   X <- cbind(XA, XN)
   X_G1 <- X[G == 1, ] # [, -1] for intercept
 
