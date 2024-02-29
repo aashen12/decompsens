@@ -29,7 +29,7 @@ informalAmplify <- function(G, Z, XA, XN, Y, Lambda, trim = 0.05, allowable = FA
   ## Compute \beta_u ##
   mod_matrix_y <- data.frame(y = Y[G==1], model.matrix(~ . - 1, data = data.frame(X_G1_stnd)))
   coeffs <- lm(y ~ ., data = mod_matrix_y)$coef[-1]
-  max_betau_01 <- max(abs(coeffs))
+  max_betau <- max(abs(coeffs), na.rm = TRUE)
 
 
 
@@ -39,7 +39,7 @@ informalAmplify <- function(G, Z, XA, XN, Y, Lambda, trim = 0.05, allowable = FA
 
   ## Imbalance before weighting
   imbal_stnd <- colMeans(X_G1_stnd[ZG1 == 1, ]) - colMeans(X_G1_stnd[ZG1 == 0, ])
-  max_imbal_stnd <- max(abs(imbal_stnd))
+  max_imbal_stnd <- max(abs(imbal_stnd), na.rm = TRUE)
 
   # Post-weighting imbalance
   w <- bounds[[3]]
@@ -47,7 +47,7 @@ informalAmplify <- function(G, Z, XA, XN, Y, Lambda, trim = 0.05, allowable = FA
   X_G1_w_stnd <- apply(X_G1, MARGIN = 2, FUN = function(x) {x * wg1 / sum(wg1)})
 
   imbal_stnd_weight <- colMeans(X_G1_w_stnd[ZG1 == 1, ]) - colMeans(X_G1_w_stnd[ZG1 == 0, ])
-  max_imbal_stnd_wt <- max(abs(imbal_stnd_weight))
+  max_imbal_stnd_wt <- max(abs(imbal_stnd_weight), na.rm = TRUE)
 
   # Get coordinates for strongest observed covariates to plot
   coeff_df <- data.frame(
@@ -64,6 +64,6 @@ informalAmplify <- function(G, Z, XA, XN, Y, Lambda, trim = 0.05, allowable = FA
   strongest_cov_df <- dplyr::inner_join(coeff_df, imbal_df, by = "covar") %>%
     dplyr::arrange(desc(coeff*imbal))
 
-  return(list(df = strongest_cov_df, max_beta = max_betau_01, max_imbal_stnd = max_imbal_stnd,
+  return(list(df = strongest_cov_df, max_beta = max_betau, max_imbal_stnd = max_imbal_stnd,
                max_imbal_stnd_wt = max_imbal_stnd_wt))
 }
