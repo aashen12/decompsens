@@ -21,6 +21,7 @@
 #' @return Bootstrap CI of the desired estimator.
 #'
 #' @import parallel
+#' @import doParallel
 #'
 #' @export
 
@@ -38,6 +39,8 @@ bootstrapCI <- function(G, Z, Y, XA, XN, gamma = 0, w, alpha = 0.05, estimand = 
   #message("Estimate: ", state)
 
   no.cores <- max(1, ifelse(parallel, detectCores(), 1))
+
+  doParallel::registerDoParallel(no.cores)
 
   n <- length(G)
 
