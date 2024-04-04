@@ -5,7 +5,16 @@
 \title{Fast solution to obtain extrema of RMPW estimator in causal decomposition
 problems}
 \usage{
-getExtrema(G, Y, gamma = 0, w, estimand = "point", stab = TRUE, RD = TRUE)
+getExtrema(
+  G,
+  Y,
+  gamma = 0,
+  w,
+  estimand = "point",
+  stab = TRUE,
+  RD = TRUE,
+  verbose = TRUE
+)
 }
 \arguments{
 \item{G}{Indicator of unmodifiable group or characteristic}

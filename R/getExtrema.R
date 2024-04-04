@@ -13,7 +13,7 @@
 #'
 #' @export
 
-getExtrema <- function(G, Y, gamma = 0, w, estimand = "point", stab = TRUE, RD = TRUE) {
+getExtrema <- function(G, Y, gamma = 0, w, estimand = "point", stab = TRUE, RD = TRUE, verbose = TRUE) {
   estimand <- match.arg(estimand, c("point", "reduction", "residual"))
   # assume observed rmpw weights already computed
   mu1 <- mean(Y[G == 1])
@@ -30,8 +30,10 @@ getExtrema <- function(G, Y, gamma = 0, w, estimand = "point", stab = TRUE, RD =
                   reduction = round(mu1 - mu_10, 3),
                   residual = round(mu_10 - mu0, 3))
 
-  message("Parameter of interest: ", estimand)
-  message("Estimate: ", state)
+  if (verbose) {
+    message("Parameter of interest: ", estimand)
+    message("Estimate: ", state)
+  }
   # prints the value of the estimator before bootstrapping
 
   w <- w[G != 0]
