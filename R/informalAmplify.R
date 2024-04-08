@@ -22,9 +22,11 @@ informalAmplify <- function(G, Z, XA, XN, Y, Lambda, trim = 0.05, allowable = FA
   maxbias <- max(abs(bounds[[1]])) # max{|inf mu_10^h - mu_10|, |sup mu_10^h - mu_10|}
   message("Max bias: ", round(maxbias, 3))
   X <- cbind(XA, XN)
-  X_G1 <- X[G == 1, ] # [, -1] for intercept
+  # standardize X
+  X_stnd <- apply(X, MARGIN = 2, FUN = function(x) {scale(x)})
 
   # standardize X for group G = 1
+  X_G1 <- X[G == 1, ] # [, -1] for intercept
   X_G1_stnd <- apply(X_G1, MARGIN = 2, FUN = function(x) {scale(x)})
 
   ## Compute \beta_u ##
@@ -39,15 +41,15 @@ informalAmplify <- function(G, Z, XA, XN, Y, Lambda, trim = 0.05, allowable = FA
   ZG1 <- Z[G == 1]
 
   ## Imbalance before weighting
-  imbal_stnd <- colMeans(X_G1_stnd[ZG1 == 1, ]) - colMeans(X_G1_stnd[ZG1 == 0, ])
+  imbal_stnd <- colMeans(X_stnd[ZG1 == 1, ]) - colMeans(X_stnd[ZG1 == 0, ])
   max_imbal_stnd <- max(abs(imbal_stnd), na.rm = TRUE)
 
   # Post-weighting imbalance
   w <- bounds[[3]]
   wg1 <- w[G == 1]
-  X_G1_w_stnd <- apply(X_G1, MARGIN = 2, FUN = function(x) {x * wg1 / sum(wg1)})
+  Xw_stnd <- apply(X_G1, MARGIN = 2, FUN = function(x) {x * w / sum(w)})
 
-  imbal_stnd_weight <- colSums(X_G1_w_stnd[ZG1 == 1, ]) - colSums(X_G1_w_stnd[ZG1 == 0, ]) # sum is reweighted
+  imbal_stnd_weight <- colSums(Xw_stnd[G == 1 & Z == 1, ]) - colSums(Xw_stnd[G == 1 & Z == 0, ]) # sum is reweighted
   max_imbal_stnd_wt <- max(abs(imbal_stnd_weight), na.rm = TRUE)
 
   # Get coordinates for strongest observed covariates to plot
