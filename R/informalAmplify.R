@@ -47,7 +47,7 @@ informalAmplify <- function(G, Z, XA, XN, Y, Lambda, trim = 0.05, allowable = FA
   wg1 <- w[G == 1]
   X_G1_w_stnd <- apply(X_G1, MARGIN = 2, FUN = function(x) {x * wg1 / sum(wg1)})
 
-  imbal_stnd_weight <- colMeans(X_G1_w_stnd[ZG1 == 1, ]) - colMeans(X_G1_w_stnd[ZG1 == 0, ])
+  imbal_stnd_weight <- colSums(X_G1_w_stnd[ZG1 == 1, ]) - colSums(X_G1_w_stnd[ZG1 == 0, ])
   max_imbal_stnd_wt <- max(abs(imbal_stnd_weight), na.rm = TRUE)
 
   # Get coordinates for strongest observed covariates to plot
