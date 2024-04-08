@@ -21,7 +21,7 @@ getBiasBounds <- function(G, Z, XA, XN, Y, Lambda, trim = 0.05,
   # lower bound = inf h \hat{mu}_10^{(h)} - \hat{mu}_10
   # upper bound = inf h \hat{mu}_10^{(h)} - \hat{mu}_10
   # there is no reduction or residual since it cancels out
-  #
+  # compute wrt point estimate
   ####################################################################
 
   mu1 <- mean(Y[G == 1])
