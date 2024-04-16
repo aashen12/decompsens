@@ -14,6 +14,7 @@
 
 estimateRMPW <- function(G, Z, Y, XA, XN, trim = 0.01, allowable = FALSE) {
   X <- cbind(XA, XN)
+  # model matrix
   if (allowable) {
     e0 <- glm(Z ~ XA, family = binomial, weights = 1 - G, na.action = na.exclude)$fitted.values
     e1 <- glm(Z ~ X, family = binomial, weights = G, na.action = na.exclude)$fitted.values
