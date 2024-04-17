@@ -46,7 +46,7 @@ informalAmplify <- function(G, Z, XA, XN, Y, mu_10, Lambda, trim = 0.01, allowab
 
   # Post-weighting imbalance
   wg1 <- w[G == 1]
-  Xw_stnd <- apply(X_G1, MARGIN = 2, FUN = function(x) {x * w / sum(w)})
+  Xw_stnd <- apply(X_G1, MARGIN = 2, FUN = function(x) {x * wg1 / sum(wg1)})
 
   imbal_stnd_weight <- colSums(Xw_stnd[G == 1 & Z == 1, ]) - colSums(Xw_stnd[G == 1 & Z == 0, ]) # sum is reweighted
   max_imbal_stnd_wt <- max(abs(imbal_stnd_weight), na.rm = TRUE)
