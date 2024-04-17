@@ -14,7 +14,7 @@
 #'
 #' @export
 
-getBiasBounds <- function(G, Z, XA, XN, Y, Lambda, trim = 0.05,
+getBiasBounds <- function(G, Z, XA, XN, Y, w, Lambda, trim = 0.05,
                           allowable = FALSE, stab = TRUE) {
   ####################################################################
   # Get bounds on bias = \mu^*_10 - \hat{mu}_10
@@ -24,15 +24,15 @@ getBiasBounds <- function(G, Z, XA, XN, Y, Lambda, trim = 0.05,
   # compute wrt point estimate
   ####################################################################
 
-  mu1 <- mean(Y[G == 1])
-  mu0 <- mean(Y[G == 0])
-  w <- estimateRMPW(G = G, Z = Z, Y = Y, XA = XA, XN = XN,
-                         trim = trim, allowable = allowable)
-  if (stab) {
-    mu_10 <- sum(w * Y * G) / sum(w * G)
-  } else {
-    mu_10 <- mean(w * Y * G)
-  }
+  # mu1 <- mean(Y[G == 1])
+  # mu0 <- mean(Y[G == 0])
+  # w <- estimateRMPW(G = G, Z = Z, Y = Y, XA = XA, XN = XN,
+  #                        trim = trim, allowable = allowable)
+  # if (stab) {
+  #   mu_10 <- sum(w * Y * G) / sum(w * G)
+  # } else {
+  #   mu_10 <- mean(w * Y * G)
+  # }
 
   # compute bounds
   bounds <- getExtrema(G = G, Y = Y, gamma = log(Lambda), w = w,
@@ -41,7 +41,6 @@ getBiasBounds <- function(G, Z, XA, XN, Y, Lambda, trim = 0.05,
   # into account whether we care about red or res
 
   # return bounds and mu_10_hat
-  out <- list(bounds, mu_10, w)
 
-  return(out)
+  return(bounds)
 }
