@@ -19,20 +19,19 @@
 
 informalAmplify <- function(G, Z, XA, XN, Y, mu_10, Lambda, trim = 0.01, allowable = TRUE, stab = TRUE) {
 
-  bounds <- decompsens::getBiasBounds(G=G, Z=Z, XA=XA, XN=XN, Y=Y, w=w, mu_10=mu_10, Lambda=Lambda, trim = trim,
-                                      allowable = allowable, stab = stab)
+  bounds <- getExtrema(G=G, Y=Y, w=w, gamma = log(Lam), estimand = "point", RD = TRUE, verbose = FALSE)
   maxbias <- max(abs(bounds)) # max{|inf mu_10^h - mu_10|, |sup mu_10^h - mu_10|}
   message("Max bias: ", round(maxbias, 3))
   X <- cbind(XA, XN)
   # standardize X
-  X_stnd <- apply(X, MARGIN = 2, FUN = function(x) {scale(x)})
+  X_stnd <- apply(X, MARGIN = 2, FUN = function(x) {(x - mean(x))/sd(x)})
 
   # standardize X for group G = 1
   X_G1 <- X[G == 1, ] # [, -1] for intercept
-  X_G1_stnd <- apply(X_G1, MARGIN = 2, FUN = function(x) {scale(x)})
+  X_G1_stnd <- apply(X_G1, MARGIN = 2, FUN = function(x) {(x - mean(x))/sd(x)})
 
   ## Compute \beta_u ##
-  mod_matrix_y <- data.frame(y = Y[G==1], model.matrix(~ . - 1, data = data.frame(X_G1_stnd)))
+  mod_matrix_y <- data.frame(y = Y[G==1], model.matrix(~ . - 1, data = data.frame(X_G1_stnd))) %>% select(-sexM)
   coeffs <- lm(y ~ ., data = mod_matrix_y)$coef[-1]
   max_betau <- max(abs(coeffs), na.rm = TRUE)
 
@@ -41,12 +40,12 @@ informalAmplify <- function(G, Z, XA, XN, Y, mu_10, Lambda, trim = 0.01, allowab
   ZG1 <- Z[G == 1]
 
   ## Imbalance before weighting
-  imbal_stnd <- colMeans(X_stnd[ZG1 == 1, ]) - colMeans(X_stnd[ZG1 == 0, ])
+  imbal_stnd <- colMeans(X_G1_stnd[ZG1 == 1, ]) - colMeans(X_G1_stnd[ZG1 == 0, ])
   max_imbal_stnd <- max(abs(imbal_stnd), na.rm = TRUE)
 
   # Post-weighting imbalance
   wg1 <- w[G == 1]
-  Xw_stnd <- apply(X_G1, MARGIN = 2, FUN = function(x) {x * wg1 / sum(wg1)})
+  Xw_stnd <- apply(X_G1_stnd, MARGIN = 2, FUN = function(x) {x * wg1 / sum(wg1)})
 
   imbal_stnd_weight <- colSums(Xw_stnd[ZG1 == 1, ]) - colSums(Xw_stnd[ZG1 == 0, ]) # sum is reweighted
   max_imbal_stnd_wt <- max(abs(imbal_stnd_weight), na.rm = TRUE)
