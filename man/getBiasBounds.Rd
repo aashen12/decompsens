@@ -11,6 +11,7 @@ getBiasBounds(
   XN,
   Y,
   w,
+  mu_10,
   Lambda,
   trim = 0.05,
   allowable = FALSE,
@@ -29,6 +30,8 @@ getBiasBounds(
 \item{Y}{Outcome}
 
 \item{w}{RMPW weights}
+
+\item{mu_10}{Point estimate of the target estimand}
 
 \item{Lambda}{Sensitivity parameter (The MSM Lambda)}
 

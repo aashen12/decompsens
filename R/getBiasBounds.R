@@ -5,6 +5,7 @@
 #' @param Z Treatment
 #' @param Y Outcome
 #' @param w RMPW weights
+#' @param mu_10 Point estimate of the target estimand
 #' @param Lambda Sensitivity parameter (The MSM Lambda)
 #' @param trim Trimming proportion
 #' @param allowable Logical indicating whether to use allowability framework
@@ -15,7 +16,7 @@
 #'
 #' @export
 
-getBiasBounds <- function(G, Z, XA, XN, Y, w, Lambda, trim = 0.05,
+getBiasBounds <- function(G, Z, XA, XN, Y, w, mu_10, Lambda, trim = 0.05,
                           allowable = FALSE, stab = TRUE) {
   ####################################################################
   # Get bounds on bias = \mu^*_10 - \hat{mu}_10
