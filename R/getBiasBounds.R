@@ -4,6 +4,7 @@
 #' @param XN Non-allowable covariates
 #' @param Z Treatment
 #' @param Y Outcome
+#' @param w RMPW weights
 #' @param Lambda Sensitivity parameter (The MSM Lambda)
 #' @param trim Trimming proportion
 #' @param allowable Logical indicating whether to use allowability framework

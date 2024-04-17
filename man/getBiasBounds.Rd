@@ -28,6 +28,8 @@ getBiasBounds(
 
 \item{Y}{Outcome}
 
+\item{w}{RMPW weights}
+
 \item{Lambda}{Sensitivity parameter (The MSM Lambda)}
 
 \item{trim}{Trimming proportion}
