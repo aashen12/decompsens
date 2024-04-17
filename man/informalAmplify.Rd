@@ -10,9 +10,10 @@ informalAmplify(
   XA,
   XN,
   Y,
+  mu_10,
   Lambda,
-  trim = 0.05,
-  allowable = FALSE,
+  trim = 0.01,
+  allowable = TRUE,
   stab = TRUE
 )
 }
@@ -27,11 +28,15 @@ informalAmplify(
 
 \item{Y}{Outcome}
 
+\item{mu_10}{Point estimate of the target estimand}
+
 \item{Lambda}{Sensitivity parameter (The MSM Lambda)}
 
 \item{trim}{Trimming proportion}
 
 \item{allowable}{Logical indicating whether to use allowability framework}
+
+\item{w}{RMPW weights}
 }
 \value{
 \code{data.frame} with each covariate's imbalance and beta_u term: informal calibration

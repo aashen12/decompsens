@@ -14,7 +14,7 @@ getBiasBounds(
   mu_10,
   Lambda,
   trim = 0.05,
-  allowable = FALSE,
+  allowable = TRUE,
   stab = TRUE
 )
 }

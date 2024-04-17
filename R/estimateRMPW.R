@@ -12,7 +12,7 @@
 #' @export
 
 
-estimateRMPW <- function(G, Z, Y, XA, XN, trim = 0.01, allowable = FALSE) {
+estimateRMPW <- function(G, Z, Y, XA, XN, trim = 0.01, allowable = TRUE) {
   X <- cbind(XA, XN)
   # model matrix
   if (allowable) {

@@ -4,6 +4,8 @@
 #' @param XN Non-allowable covariates WITHOUT INTERCEPT
 #' @param Z Treatment
 #' @param Y Outcome
+#' @param w RMPW weights
+#' @param mu_10 Point estimate of the target estimand
 #' @param Lambda Sensitivity parameter (The MSM Lambda)
 #' @param trim Trimming proportion
 #' @param allowable Logical indicating whether to use allowability framework
@@ -15,11 +17,11 @@
 #' @export
 
 
-informalAmplify <- function(G, Z, XA, XN, Y, Lambda, trim = 0.05, allowable = FALSE, stab = TRUE) {
+informalAmplify <- function(G, Z, XA, XN, Y, mu_10, Lambda, trim = 0.01, allowable = TRUE, stab = TRUE) {
 
-  bounds <- decompsens::getBiasBounds(G, Z, XA, XN, Y, Lambda, trim = trim,
+  bounds <- decompsens::getBiasBounds(G=G, Z=Z, XA=XA, XN=XN, Y=Y, w=w, mu_10=mu_10, Lambda=Lambda, trim = trim,
                                       allowable = allowable, stab = stab)
-  maxbias <- max(abs(bounds[[1]])) # max{|inf mu_10^h - mu_10|, |sup mu_10^h - mu_10|}
+  maxbias <- max(abs(bounds)) # max{|inf mu_10^h - mu_10|, |sup mu_10^h - mu_10|}
   message("Max bias: ", round(maxbias, 3))
   X <- cbind(XA, XN)
   # standardize X
@@ -34,8 +36,6 @@ informalAmplify <- function(G, Z, XA, XN, Y, Lambda, trim = 0.05, allowable = FA
   coeffs <- lm(y ~ ., data = mod_matrix_y)$coef[-1]
   max_betau <- max(abs(coeffs), na.rm = TRUE)
 
-
-
   ## Compute standardized imbalance in U: \delta_u ##
 
   ZG1 <- Z[G == 1]
@@ -45,7 +45,6 @@ informalAmplify <- function(G, Z, XA, XN, Y, Lambda, trim = 0.05, allowable = FA
   max_imbal_stnd <- max(abs(imbal_stnd), na.rm = TRUE)
 
   # Post-weighting imbalance
-  w <- bounds[[3]]
   wg1 <- w[G == 1]
   Xw_stnd <- apply(X_G1, MARGIN = 2, FUN = function(x) {x * w / sum(w)})
 

@@ -4,7 +4,7 @@
 \alias{estimateRMPW}
 \title{Helper function to estimate RMPW weights}
 \usage{
-estimateRMPW(G, Z, Y, XA, XN, trim = 0.01, allowable = FALSE)
+estimateRMPW(G, Z, Y, XA, XN, trim = 0.01, allowable = TRUE)
 }
 \arguments{
 \item{G}{Indicator of unmodifiable group or characteristic}

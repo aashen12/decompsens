@@ -17,7 +17,7 @@
 #' @export
 
 getBiasBounds <- function(G, Z, XA, XN, Y, w, mu_10, Lambda, trim = 0.05,
-                          allowable = FALSE, stab = TRUE) {
+                          allowable = TRUE, stab = TRUE) {
   ####################################################################
   # Get bounds on bias = \mu^*_10 - \hat{mu}_10
   # lower bound = inf h \hat{mu}_10^{(h)} - \hat{mu}_10
