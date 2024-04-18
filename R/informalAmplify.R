@@ -19,7 +19,7 @@
 
 informalAmplify <- function(G, Z, XA, XN, Y, mu_10, Lambda, trim = 0.01, allowable = TRUE, stab = TRUE) {
 
-  bounds <- getExtrema(G=G, Y=Y, w=w, gamma = log(Lam), estimand = "point", RD = TRUE, verbose = FALSE)
+  bounds <- getExtrema(G=G, Y=Y, w=w, gamma = log(Lambda), estimand = "point", RD = TRUE, verbose = FALSE)
   maxbias <- max(abs(bounds)) # max{|inf mu_10^h - mu_10|, |sup mu_10^h - mu_10|}
   message("Max bias: ", round(maxbias, 3))
   X <- cbind(XA, XN)
