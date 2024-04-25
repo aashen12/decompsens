@@ -7,6 +7,8 @@
 #' @param w RMPW weights
 #' @param mu_10 Point estimate of the target estimand
 #' @param Lambda Sensitivity parameter (The MSM Lambda)
+#' @param e1 Propensity score for G = 1
+#' @param e0 Propensity score for G = 0
 #' @param trim Trimming proportion
 #' @param allowable Logical indicating whether to use allowability framework
 #'
@@ -17,7 +19,7 @@
 #' @export
 
 
-decompAmplify <- function(G, Z, XA, XN, Y, mu_10, Lambda, trim = 0.01, allowable = TRUE, stab = TRUE) {
+decompAmplify <- function(G, Z, XA, XN, Y, mu_10, Lambda, e1, e0, trim = 0.01, allowable = TRUE, stab = TRUE) {
 
   bounds <- decompsens::getBiasBounds(G, Z, XA, XN, Y, w, mu10, Lambda = Lam, trim = 0.01, allowable = TRUE)
   maxbias <- max(abs(bounds)) # max{|inf mu_10^h - mu_10|, |sup mu_10^h - mu_10|}
@@ -34,21 +36,33 @@ decompAmplify <- function(G, Z, XA, XN, Y, mu_10, Lambda, trim = 0.01, allowable
   ## Compute \beta_u ##
   mod_matrix_y <- data.frame(y = Y[G==1], model.matrix(~ . - 1, data = data.frame(X_G1_stnd))) %>%
     select(-sexM)
-  coeffs <- lm(y ~ ., data = mod_matrix_y)$coef[-1]
-  max_betau <- max(abs(coeffs), na.rm = TRUE)
+  beta1 <- lm(y ~ ., data = mod_matrix_y, weights = ZG1)$coef[-1]
+  beta0 <- lm(y ~ ., data = mod_matrix_y, weights = 1 - ZG1)$coef[-1]
+  coeffs <- map_dbl(1:length(beta1), function(i) {
+    out1 <- beta1[i] * e0
+    out0 <- beta0[i] * e1 * (1-e0) / (1-e1)
+    name1 <- names(beta1)[i]
+    name0 <- names(beta0)[i]
+    out <- abs(mean(out1 - out0))
+    if (name1 == name0) {
+      return(out)
+    } else {
+      stop("Names of coeffs do not match!")
+    }
+  }); if (all(names(beta1) == names(beta0))) {names(coeffs) <- names(beta1)} else stop("Names of coeffs do not match!")
+
 
   ## Compute standardized imbalance in U: \delta_u ##
 
-
   ## Imbalance before weighting
-  imbal_stnd <- colMeans(X_G1_stnd[ZG1 == 1, ]) - colMeans(X_G1_stnd[ZG1 == 0, ])
+  imbal_stnd <- colMeans(X_G1_stnd) - colMeans(X_G1_stnd[ZG1 == 1, ])
   max_imbal_stnd <- max(abs(imbal_stnd), na.rm = TRUE)
 
   # Post-weighting imbalance
   wg1 <- w[G == 1]
   Xw_stnd <- apply(X_G1_stnd, MARGIN = 2, FUN = function(x) {x * wg1 / sum(wg1)})
 
-  imbal_stnd_weight <- colSums(Xw_stnd[ZG1 == 1, ]) - colSums(Xw_stnd[ZG1 == 0, ]) # sum is reweighted
+  imbal_stnd_weight <- colMeans(X_G1_stnd) - colSums(Xw_stnd[ZG1 == 1, ]) # sum is reweighted
   max_imbal_stnd_wt <- max(abs(imbal_stnd_weight), na.rm = TRUE)
 
   # Get coordinates for strongest observed covariates to plot
@@ -56,7 +70,6 @@ decompAmplify <- function(G, Z, XA, XN, Y, mu_10, Lambda, trim = 0.01, allowable
     covar = gsub("X_stnd[G == 1, ]", "", names(coeffs)),
     coeff = abs(as.numeric(coeffs)))
 
-  # get imbal
   imbal_df <- data.frame(
     covar = names(imbal_stnd),
     imbal = abs(as.numeric(imbal_stnd)),
