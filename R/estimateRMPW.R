@@ -7,7 +7,7 @@
 #' @param trim Trimming proportion
 #' @param allowable Logical indicating whether to use allowability framework
 #'
-#' @return RMPW weights
+#' @return w_rmpw RMPW weights, e_g group propensity scores
 #'
 #' @export
 
@@ -30,5 +30,5 @@ estimateRMPW <- function(G, Z, Y, XA, XN, trim = 0.01, allowable = TRUE) {
   w0 = (1 - e0) / (1 - e1)
   w_rmpw = w1 * Z + w0 * (1 - Z)
 
-  return(w_rmpw)
+  return(list(w_rmpw = w_rmpw, e0 = e0, e1 = e1))
 }

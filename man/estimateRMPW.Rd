@@ -22,7 +22,7 @@ estimateRMPW(G, Z, Y, XA, XN, trim = 0.01, allowable = TRUE)
 \item{allowable}{Logical indicating whether to use allowability framework}
 }
 \value{
-RMPW weights
+w_rmpw RMPW weights, e_g group propensity scores
 }
 \description{
 Helper function to estimate RMPW weights
