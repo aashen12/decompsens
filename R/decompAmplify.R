@@ -36,21 +36,22 @@ decompAmplify <- function(G, Z, XA, XN, Y, mu_10, Lambda, e1, e0, trim = 0.01, a
   ## Compute \beta_u ##
   mod_matrix_y <- data.frame(y = Y[G==1], model.matrix(~ . - 1, data = data.frame(X_G1_stnd))) %>%
     select(-sexM)
-  beta1 <- lm(y ~ ., data = mod_matrix_y, weights = ZG1)$coef[-1]
-  beta0 <- lm(y ~ ., data = mod_matrix_y, weights = 1 - ZG1)$coef[-1]
-  coeffs <- map_dbl(1:length(beta1), function(i) {
-    out1 <- beta1[i] * e0
-    out0 <- beta0[i] * e1 * (1-e0) / (1-e1)
-    name1 <- names(beta1)[i]
-    name0 <- names(beta0)[i]
-    out <- abs(mean(out1 - out0))
-    if (name1 == name0) {
-      return(out)
-    } else {
-      stop("Names of coeffs do not match!")
-    }
-  }); if (all(names(beta1) == names(beta0))) {names(coeffs) <- names(beta1)} else stop("Names of coeffs do not match!")
-  max_betau <- max(coeffs)
+  coeffs <- lm(y ~ ., data = mod_matrix_y)$coef[-1]
+  # beta1 <- lm(y ~ ., data = mod_matrix_y, weights = ZG1)$coef[-1]
+  # beta0 <- lm(y ~ ., data = mod_matrix_y, weights = 1 - ZG1)$coef[-1]
+  # coeffs <- map_dbl(1:length(beta1), function(i) {
+  #   out1 <- beta1[i] * e0
+  #   out0 <- beta0[i] * e1 * (1-e0) / (1-e1)
+  #   name1 <- names(beta1)[i]
+  #   name0 <- names(beta0)[i]
+  #   out <- abs(mean(out1 - out0))
+  #   if (name1 == name0) {
+  #     return(out)
+  #   } else {
+  #     stop("Names of coeffs do not match!")
+  #   }
+  # }); if (all(names(beta1) == names(beta0))) {names(coeffs) <- names(beta1)} else stop("Names of coeffs do not match!")
+  max_betau <- max(abs(coeffs))
 
 
   ## Compute standardized imbalance in U: \delta_u ##
