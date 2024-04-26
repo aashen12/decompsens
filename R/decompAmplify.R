@@ -50,6 +50,7 @@ decompAmplify <- function(G, Z, XA, XN, Y, mu_10, Lambda, e1, e0, trim = 0.01, a
       stop("Names of coeffs do not match!")
     }
   }); if (all(names(beta1) == names(beta0))) {names(coeffs) <- names(beta1)} else stop("Names of coeffs do not match!")
+  max_betau <- max(coeffs)
 
 
   ## Compute standardized imbalance in U: \delta_u ##
