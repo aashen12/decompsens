@@ -81,5 +81,5 @@ decompAmplify <- function(G, Z, XA, XN, Y, mu_10, Lambda, e1, e0, trim = 0.01, a
     dplyr::arrange(desc(coeff*imbal))
 
   return(list(df = strongest_cov_df, max_beta = max_betau, max_imbal_stnd = max_imbal_stnd,
-              max_imbal_stnd_wt = max_imbal_stnd_wt))
+              max_imbal_stnd_wt = max_imbal_stnd_wt, maxbias = maxbias))
 }
