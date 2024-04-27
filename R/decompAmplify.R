@@ -34,9 +34,10 @@ decompAmplify <- function(G, Z, XA, XN, Y, mu_10, Lambda, e1, e0, trim = 0.01, a
   X_G1_stnd <- apply(X_G1, MARGIN = 2, FUN = function(x) {(x - mean(x))/sd(x)})
 
   ## Compute \beta_u ##
-  mod_matrix_y <- data.frame(y = Y[G==1], model.matrix(~ . - 1, data = data.frame(X_G1_stnd))) %>%
+  mod_matrix_y <- data.frame(y = Y[G==1], model.matrix(~ . - 1, data = data.frame(X_G1_stnd, Z = ZG1))) %>%
     select(-sexM)
   coeffs <- lm(y ~ ., data = mod_matrix_y)$coef[-1]
+  print(coeffs)
   # beta1 <- lm(y ~ ., data = mod_matrix_y, weights = ZG1)$coef[-1]
   # beta0 <- lm(y ~ ., data = mod_matrix_y, weights = 1 - ZG1)$coef[-1]
   # coeffs <- map_dbl(1:length(beta1), function(i) {
