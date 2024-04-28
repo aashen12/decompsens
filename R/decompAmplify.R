@@ -9,6 +9,7 @@
 #' @param Lambda Sensitivity parameter (The MSM Lambda)
 #' @param e1 Propensity score for G = 1
 #' @param e0 Propensity score for G = 0
+#' @param loco_weights Leave-one-covariate-out imbalance terms for each covariate
 #' @param trim Trimming proportion
 #' @param allowable Logical indicating whether to use allowability framework
 #'
@@ -19,7 +20,7 @@
 #' @export
 
 
-decompAmplify <- function(G, Z, XA, XN, Y, mu_10, Lambda, e1, e0, trim = 0.01, allowable = TRUE, stab = TRUE) {
+decompAmplify <- function(G, Z, XA, XN, Y, mu_10, Lambda, e1, e0, loco_weights, trim = 0.01, allowable = TRUE, stab = TRUE) {
 
   bounds <- decompsens::getBiasBounds(G, Z, XA, XN, Y, w, mu10, Lambda = Lambda, trim = 0.01, allowable = TRUE)
   maxbias <- max(abs(bounds)) # max{|inf mu_10^h - mu_10|, |sup mu_10^h - mu_10|}
@@ -60,14 +61,28 @@ decompAmplify <- function(G, Z, XA, XN, Y, mu_10, Lambda, e1, e0, trim = 0.01, a
 
   ## Imbalance before weighting
   imbal_stnd <- colMeans(X_G1_stnd) - colMeans(X_G1_stnd[ZG1 == 1, ])
-  max_imbal_stnd <- max(abs(imbal_stnd), na.rm = TRUE)
+  max_imbal_stnd <- max(abs(imbal_stnd), na.rm = FALSE)
+
+  ## Imbalance after weighting
+  imbal_stnd_weight <- sapply(seq_len(ncol(X_G1_stnd)), function(i) {
+    Xi <- X_G1_stnd[, i]
+    imbal_weights <- loco_weights[[i]]
+    mean(imbal_weights[G == 1] * Xi)
+  }); names(imbal_stnd_weight) <- colnames(X_G1_stnd)
+  max_imbal_stnd_wt <- max(abs(imbal_stnd_weight), na.rm = FALSE)
+
+  if (names(imbal_stnd_weight) != names(imbal_stnd)) {
+    warning("Names of imbal_stnd_weight do not match!")
+  } else {
+    message("Names of imbal_stnd_weight match!")
+  }
+
 
   # Post-weighting imbalance
-  wg1 <- w[G == 1]
-  Xw_stnd <- apply(X_G1_stnd, MARGIN = 2, FUN = function(x) {x * wg1 / sum(wg1)})
-
-  imbal_stnd_weight <- colMeans(X_G1_stnd) - colSums(Xw_stnd[ZG1 == 1, ]) # sum is reweighted
-  max_imbal_stnd_wt <- max(abs(imbal_stnd_weight), na.rm = TRUE)
+  # wg1 <- w[G == 1]
+  # Xw_stnd <- apply(X_G1_stnd, MARGIN = 2, FUN = function(x) {x * wg1 / sum(wg1)})
+  # imbal_stnd_weight <- colMeans(X_G1_stnd) - colSums(Xw_stnd[ZG1 == 1, ]) # sum is reweighted
+  # max_imbal_stnd_wt <- max(abs(imbal_stnd_weight), na.rm = TRUE)
 
   # Get coordinates for strongest observed covariates to plot
   coeff_df <- data.frame(

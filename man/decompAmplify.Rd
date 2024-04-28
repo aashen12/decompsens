@@ -14,6 +14,7 @@ decompAmplify(
   Lambda,
   e1,
   e0,
+  loco_weights,
   trim = 0.01,
   allowable = TRUE,
   stab = TRUE
@@ -37,6 +38,8 @@ decompAmplify(
 \item{e1}{Propensity score for G = 1}
 
 \item{e0}{Propensity score for G = 0}
+
+\item{loco_weights}{Leave-one-covariate-out imbalance terms for each covariate}
 
 \item{trim}{Trimming proportion}
 
