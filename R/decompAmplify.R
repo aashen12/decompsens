@@ -72,7 +72,7 @@ decompAmplify <- function(G, Z, XA, XN, Y, mu_10, Lambda, e1, e0, loco_weights, 
   }); names(imbal_stnd_weight) <- colnames(X_G1_stnd)
   max_imbal_stnd_wt <- max(abs(imbal_stnd_weight), na.rm = FALSE)
 
-  if (names(imbal_stnd_weight) != names(imbal_stnd)) {
+  if (any(names(imbal_stnd_weight) != names(imbal_stnd))) {
     warning("Names of imbal_stnd_weight do not match!")
   } else {
     message("Names of imbal_stnd_weight match!")
