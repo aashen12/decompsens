@@ -15,7 +15,6 @@ decompAmplify(
   e1,
   e0,
   loco_weights,
-  X_df,
   trim = 0.01,
   allowable = TRUE,
   stab = TRUE
@@ -41,8 +40,6 @@ decompAmplify(
 \item{e0}{Propensity score for G = 0}
 
 \item{loco_weights}{Leave-one-covariate-out imbalance terms for each covariate}
-
-\item{X_df}{Data frame of covariates (needed to compute imbalance over dummies)}
 
 \item{trim}{Trimming proportion}
 
