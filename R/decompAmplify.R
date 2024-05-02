@@ -64,26 +64,32 @@ decompAmplify <- function(G, Z, XA, XN, Y, mu_10, Lambda, e1, e0, loco_weights, 
   max_imbal_stnd <- max(abs(imbal_stnd), na.rm = FALSE)
 
   ## Imbalance after weighting
-  imbal_stnd_weight <- sapply(seq_len(ncol(X_G1_stnd)), function(i) {
-    cov_name <- colnames(X_G1_stnd)[i]
-    Xi <- X_G1_stnd[, i]
-    imbal_weights <- loco_weights[[i]]
-    mean(imbal_weights[G == 1] * Xi)
-  }); names(imbal_stnd_weight) <- colnames(X_G1_stnd)
-  max_imbal_stnd_wt <- max(abs(imbal_stnd_weight), na.rm = FALSE)
-
-  if (any(names(imbal_stnd_weight) != names(imbal_stnd))) {
-    warning("Names of imbal_stnd_weight do not match!")
-  } else {
-    message("Names of imbal_stnd_weight match!")
-  }
+  # imbal_stnd_weight <- sapply(seq_len(ncol(X_G1_stnd)), function(i) {
+  #   cov_name <- colnames(X_G1_stnd)[i]
+  #   Xi <- X_G1_stnd[, i]
+  #   imbal_weights <- loco_weights[[i]]
+  #   mean(imbal_weights[G == 1] * Xi)
+  # }); names(imbal_stnd_weight) <- colnames(X_G1_stnd)
+  # max_imbal_stnd_wt <- max(abs(imbal_stnd_weight), na.rm = FALSE)
+  #
+  # if (any(names(imbal_stnd_weight) != names(imbal_stnd))) {
+  #   warning("Names of imbal_stnd_weight do not match!")
+  # } else {
+  #   message("Names of imbal_stnd_weight match!")
+  # }
 
 
   # Post-weighting imbalance
-  # wg1 <- w[G == 1]
+  e0_G1 <- e0[G == 1]
+  e1_G1 <- e1[G == 1]
+  scale_factor <- (e0_G1 - e1_G1) / (1 - e1_G1)
+  treated_scale_factor <- scale_factor / e1_G1
+  X_rescaled <- apply(X_G1_stnd, MARGIN = 2, FUN = function(x) {x * scale_factor / sum(scale_factor)})
+  X_treated_rescaled <- apply(X_G1_stnd, MARGIN = 2, FUN = function(x) {x * treated_scale_factor / sum(treated_scale_factor)})
+
   # Xw_stnd <- apply(X_G1_stnd, MARGIN = 2, FUN = function(x) {x * wg1 / sum(wg1)})
-  # imbal_stnd_weight <- colMeans(X_G1_stnd) - colSums(Xw_stnd[ZG1 == 1, ]) # sum is reweighted
-  # max_imbal_stnd_wt <- max(abs(imbal_stnd_weight), na.rm = TRUE)
+  imbal_stnd_weight <- colSums(X_rescaled) - colSums(X_treated_rescaled[ZG1 == 1, ]) # sum is reweighted
+  max_imbal_stnd_wt <- max(abs(imbal_stnd_weight), na.rm = TRUE)
 
   # Get coordinates for strongest observed covariates to plot
   coeff_df <- data.frame(
