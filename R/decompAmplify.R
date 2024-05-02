@@ -83,11 +83,11 @@ decompAmplify <- function(G, Z, XA, XN, Y, mu_10, Lambda, e1, e0, loco_weights, 
   e0_G1 <- e0[G == 1]
   e1_G1 <- e1[G == 1]
   scale_factor <- (e0_G1 - e1_G1) / (1 - e1_G1)
-  X_rescaled <- apply(X_G1_stnd, MARGIN = 2, FUN = function(x) {x * scale_factor / sum(abs(scale_factor))})
+  X_rescaled <- apply(X_G1_stnd, MARGIN = 2, FUN = function(x) {x * abs(scale_factor) / sum(abs(scale_factor))})
 
   ZG1 <- Z[G == 1]
   treated_scale_factor <- scale_factor[ZG1 == 1] / e1_G1[ZG1 == 1]
-  X_treated_rescaled <- apply(X_G1_stnd, MARGIN = 2, FUN = function(x) {x * treated_scale_factor / sum(abs(treated_scale_factor))})
+  X_treated_rescaled <- apply(X_G1_stnd, MARGIN = 2, FUN = function(x) {x * abs(treated_scale_factor) / sum(abs(treated_scale_factor))})
 
   # Xw_stnd <- apply(X_G1_stnd, MARGIN = 2, FUN = function(x) {x * wg1 / sum(wg1)})
   imbal_stnd_weight <- colSums(X_rescaled) - colSums(X_treated_rescaled[ZG1 == 1, ]) # sum is reweighted
