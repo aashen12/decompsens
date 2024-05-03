@@ -9,7 +9,6 @@
 #' @param Lambda Sensitivity parameter (The MSM Lambda)
 #' @param e1 Propensity score for G = 1
 #' @param e0 Propensity score for G = 0
-#' @param loco_weights Leave-one-covariate-out imbalance terms for each covariate
 #' @param trim Trimming proportion
 #' @param allowable Logical indicating whether to use allowability framework
 #'
@@ -20,7 +19,7 @@
 #' @export
 
 
-decompAmplify <- function(G, Z, XA, XN, Y, mu_10, Lambda, e1, e0, loco_weights, trim = 0.01, allowable = TRUE, stab = TRUE) {
+decompAmplify <- function(G, Z, XA, XN, Y, mu_10, Lambda, e1, e0, trim = 0.01, allowable = TRUE, stab = TRUE) {
 
   bounds <- decompsens::getBiasBounds(G, Z, XA, XN, Y, w, mu10, Lambda = Lambda, trim = 0.01, allowable = TRUE)
   maxbias <- max(abs(bounds)) # max{|inf mu_10^h - mu_10|, |sup mu_10^h - mu_10|}
