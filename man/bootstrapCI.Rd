@@ -12,7 +12,6 @@ bootstrapCI(
   XA,
   XN,
   gamma = 0,
-  w,
   alpha = 0.05,
   estimand = "point",
   parallel = TRUE,
@@ -37,8 +36,6 @@ bootstrapCI(
 
 \item{gamma}{Sensitivity parameter (log of MSM Lambda)}
 
-\item{w}{fitted RMPW weights}
-
 \item{alpha}{Significance level}
 
 \item{estimand}{Target estimand, either "point", "reduction" or "residual"}
@@ -56,6 +53,8 @@ bootstrapCI(
 \item{trim}{Trimming proportion}
 
 \item{RD}{logical indicating whether to use risk diff or risk ratio (RR)}
+
+\item{w}{fitted RMPW weights}
 }
 \value{
 Bootstrap CI of the desired estimator.
