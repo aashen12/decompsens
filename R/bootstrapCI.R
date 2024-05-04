@@ -72,8 +72,9 @@ bootstrapCI <- function(G, Z, Y, XA, XN, gamma = 0, w, alpha = 0.05, estimand = 
     Zs <- Z[s]
 
     # re-estimate weights
-    w_rmpw_boot <- estimateRMPW(G = Gs, Z = Zs, Y = Ys, XA = XAs, XN = XNs,
+    w_rmpw_boot_obj <- estimateRMPW(G = Gs, Z = Zs, Y = Ys, XA = XAs, XN = XNs,
                                 trim = trim, allowable = allowable)
+    w_rmpw_boot <- w_rmpw_boot_obj$w_rmpw
 
     mu10_B <- tryCatch(getExtrema(G[s], Y[s], gamma, w_rmpw_boot, estimand = "point", stab),
                     error = function(e) {print(e)});
