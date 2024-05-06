@@ -81,13 +81,13 @@ bootstrapCI <- function(G, Z, Y, XA, XN, gamma = 0, alpha = 0.05, estimand = "po
     if (RD) {
       ests <- switch(estimand,
                     point = mu10_B,
-                    reduction = mean(Y[G == 1]) - rev(mu10_B),
-                    residual = mu10_B - mean(Y[G == 0]))
+                    reduction = mean(Ys[Gs == 1]) - rev(mu10_B),
+                    residual = mu10_B - mean(Ys[Gs == 0]))
     } else {
       ests <- switch(estimand,
                     point = mu10_B,
-                    reduction = mean(Y[G == 1]) / rev(mu10_B),
-                    residual = mu10_B / mean(Y[G == 0]))
+                    reduction = mean(Ys[Gs == 1]) / rev(mu10_B),
+                    residual = mu10_B / mean(Ys[Gs == 0]))
     }
     ests
   }, mc.cores = no.cores)
