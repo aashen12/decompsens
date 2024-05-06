@@ -76,19 +76,20 @@ bootstrapCI <- function(G, Z, Y, XA, XN, gamma = 0, alpha = 0.05, estimand = "po
                                 trim = trim, allowable = allowable)
     w_rmpw_boot <- w_rmpw_boot_obj$w_rmpw
 
-    mu10_B <- tryCatch(getExtrema(G[s], Y[s], gamma, w_rmpw_boot, estimand = "point", stab),
+    mu10_B <- tryCatch(getExtrema(G[s], Y[s], gamma, w_rmpw_boot, estimand = estimand, stab),
                     error = function(e) {print(e)});
-    if (RD) {
-      ests <- switch(estimand,
-                    point = mu10_B,
-                    reduction = mean(Ys[Gs == 1]) - rev(mu10_B),
-                    residual = mu10_B - mean(Ys[Gs == 0]))
-    } else {
-      ests <- switch(estimand,
-                    point = mu10_B,
-                    reduction = mean(Ys[Gs == 1]) / rev(mu10_B),
-                    residual = mu10_B / mean(Ys[Gs == 0]))
-    }
+    ests <- mu10_B
+    # if (RD) {
+    #   ests <- switch(estimand,
+    #                 point = mu10_B,
+    #                 reduction = mean(Ys[Gs == 1]) - rev(mu10_B),
+    #                 residual = mu10_B - mean(Ys[Gs == 0]))
+    # } else {
+    #   ests <- switch(estimand,
+    #                 point = mu10_B,
+    #                 reduction = mean(Ys[Gs == 1]) / rev(mu10_B),
+    #                 residual = mu10_B / mean(Ys[Gs == 0]))
+    # }
     ests
   }, mc.cores = no.cores)
 
