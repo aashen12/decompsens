@@ -28,7 +28,7 @@
 
 bootstrapCI <- function(G, Z, Y, XA, XN, gamma = 0, alpha = 0.05, estimand = "point",
                        parallel = TRUE, B = 1000, stab = TRUE, stratify = FALSE,
-                       allowable = FALSE, trim = 0.05, RD = TRUE) {
+                       allowable = TRUE, trim = 0.05, RD = TRUE) {
   estimand <- match.arg(estimand, c("point", "reduction", "residual"))
 
 #   state <- switch(estimand, point = round(mu_10, 3),
