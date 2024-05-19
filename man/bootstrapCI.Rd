@@ -19,7 +19,8 @@ bootstrapCI(
   stab = TRUE,
   stratify = FALSE,
   allowable = TRUE,
-  trim = 0.05,
+  trim0 = 0.05,
+  trim1 = 0.05,
   RD = TRUE
 )
 }
@@ -50,7 +51,9 @@ bootstrapCI(
 
 \item{allowable}{Logical indicating whether to use allowability framework}
 
-\item{trim}{Trimming proportion}
+\item{trim0}{Trimming proportion for e_0}
+
+\item{trim1}{Trimming proportion for e_1}
 
 \item{RD}{logical indicating whether to use risk diff or risk ratio (RR)}
 

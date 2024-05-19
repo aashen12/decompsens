@@ -14,7 +14,8 @@
 #' @param B Number of bootstrap samples
 #' @param stab use stabilized estimator? most likely yes
 #' @param stratify do block bootstrap
-#' @param trim Trimming proportion
+#' @param trim0 Trimming proportion for e_0
+#' @param trim1 Trimming proportion for e_1
 #' @param allowable Logical indicating whether to use allowability framework
 #' @param RD logical indicating whether to use risk diff or risk ratio (RR)
 #'
@@ -28,7 +29,7 @@
 
 bootstrapCI <- function(G, Z, Y, XA, XN, gamma = 0, alpha = 0.05, estimand = "point",
                        parallel = TRUE, B = 1000, stab = TRUE, stratify = FALSE,
-                       allowable = TRUE, trim = 0.05, RD = TRUE) {
+                       allowable = TRUE, trim0 = 0.05, trim1 = 0.05, RD = TRUE) {
   estimand <- match.arg(estimand, c("point", "reduction", "residual"))
 
 #   state <- switch(estimand, point = round(mu_10, 3),
@@ -73,7 +74,7 @@ bootstrapCI <- function(G, Z, Y, XA, XN, gamma = 0, alpha = 0.05, estimand = "po
 
     # re-estimate weights
     w_rmpw_boot_obj <- estimateRMPW(G = Gs, Z = Zs, Y = Ys, XA = XAs, XN = XNs,
-                                trim = trim, allowable = allowable)
+                                trim0 = trim0, trim1 = trim1, allowable = allowable)
     w_rmpw_boot <- w_rmpw_boot_obj$w_rmpw
 
     mu10_B <- tryCatch(getExtrema(G[s], Y[s], gamma, w_rmpw_boot, estimand = estimand, stab),
