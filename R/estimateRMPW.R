@@ -4,7 +4,8 @@
 #' @param Y Outcome
 #' @param XA Allowable covariates WITHOUT INTERCEPT
 #' @param XN Non-allowable covariates WITHOUT INTERCEPT
-#' @param trim Trimming proportion
+#' @param trim0 Trimming proportion for e_0
+#' @param trim1 Trimming proportion for e_1
 #' @param allowable Logical indicating whether to use allowability framework
 #'
 #' @return w_rmpw RMPW weights, e_g group propensity scores
@@ -12,7 +13,7 @@
 #' @export
 
 
-estimateRMPW <- function(G, Z, Y, XA, XN, trim = 0.01, allowable = TRUE) {
+estimateRMPW <- function(G, Z, Y, XA, XN, trim0 = 0.05, trim1 = 0.05, allowable = TRUE) {
   X <- cbind(XA, XN)
   # model matrix
   if (allowable) {
@@ -23,8 +24,8 @@ estimateRMPW <- function(G, Z, Y, XA, XN, trim = 0.01, allowable = TRUE) {
     e1 <- glm(Z ~ ., data = X, family = binomial, weights = G, na.action = na.exclude)$fitted.values
   }
 
-  e0 <- pmax(pmin(e0, 1 - trim), trim)
-  e1 <- pmax(pmin(e1, 1 - trim), trim)
+  e0 <- pmax(pmin(e0, 1 - trim0), trim0)
+  e1 <- pmax(pmin(e1, 1 - trim1), trim1)
 
   w1 = e0 / e1
   w0 = (1 - e0) / (1 - e1)

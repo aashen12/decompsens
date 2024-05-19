@@ -18,7 +18,7 @@ bootstrapCI(
   B = 1000,
   stab = TRUE,
   stratify = FALSE,
-  allowable = FALSE,
+  allowable = TRUE,
   trim = 0.05,
   RD = TRUE
 )

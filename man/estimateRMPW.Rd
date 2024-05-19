@@ -4,7 +4,7 @@
 \alias{estimateRMPW}
 \title{Helper function to estimate RMPW weights}
 \usage{
-estimateRMPW(G, Z, Y, XA, XN, trim = 0.01, allowable = TRUE)
+estimateRMPW(G, Z, Y, XA, XN, trim0 = 0.05, trim1 = 0.05, allowable = TRUE)
 }
 \arguments{
 \item{G}{Indicator of unmodifiable group or characteristic}
@@ -17,7 +17,9 @@ estimateRMPW(G, Z, Y, XA, XN, trim = 0.01, allowable = TRUE)
 
 \item{XN}{Non-allowable covariates WITHOUT INTERCEPT}
 
-\item{trim}{Trimming proportion}
+\item{trim0}{Trimming proportion for e_0}
+
+\item{trim1}{Trimming proportion for e_1}
 
 \item{allowable}{Logical indicating whether to use allowability framework}
 }
