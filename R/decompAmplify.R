@@ -21,7 +21,7 @@
 
 decompAmplify <- function(G, Z, XA, XN, Y, mu_10, Lambda, e1, e0, trim = 0.01, allowable = TRUE, stab = TRUE) {
 
-  bounds <- decompsens::getBiasBounds(G, Z, XA, XN, Y, w, mu10, Lambda = Lambda, trim = 0.01, allowable = TRUE)
+  bounds <- decompsens::getBiasBounds(G, Z, XA, XN, Y, w, mu_10 = mu_10, Lambda = Lambda, trim = 0.01, allowable = TRUE)
   maxbias <- max(abs(bounds)) # max{|inf mu_10^h - mu_10|, |sup mu_10^h - mu_10|}
   message("Max bias: ", round(maxbias, 3))
   X <- cbind(XA, XN)
