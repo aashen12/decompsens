@@ -85,11 +85,11 @@ decompAmplify <- function(G, Z, XA, XN, Y, mu_10, Lambda, e1, e0, trim = 0.01, a
   X_rescaled <- apply(X_G1_stnd, MARGIN = 2, FUN = function(x) {x * abs(scale_factor) / sum(abs(scale_factor))})
 
   ZG1 <- Z[G == 1]
-  treated_scale_factor <- scale_factor / e1_G1
+  treated_scale_factor <- ZG1 * scale_factor / e1_G1
   X_treated_rescaled <- apply(X_G1_stnd, MARGIN = 2, FUN = function(x) {x * abs(treated_scale_factor) / sum(abs(treated_scale_factor))})
 
   # Xw_stnd <- apply(X_G1_stnd, MARGIN = 2, FUN = function(x) {x * wg1 / sum(wg1)})
-  imbal_stnd_weight <- colSums(X_rescaled) - colSums(X_treated_rescaled[ZG1 == 1, ]) # sum is reweighted
+  imbal_stnd_weight <- colSums(X_rescaled) - colSums(X_treated_rescaled) # sum is reweighted
   max_imbal_stnd_wt <- max(abs(imbal_stnd_weight), na.rm = TRUE)
 
   # Get coordinates for strongest observed covariates to plot
